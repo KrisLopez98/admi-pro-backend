@@ -9,6 +9,9 @@ const app = express();
 // configurar cors
 app.use(cors());
 
+// Lectura y parseo del body
+app.use(express.json());
+
 // base de datos
 dbConnection();
 
@@ -16,12 +19,10 @@ dbConnection();
 // password 3O2kyuMSrFJzz3PN
 
 // Rutas
-app.get("/", (request, response) => {
-  response.json({
-    ok: true,
-    msg: "Hola mundo",
-  });
-});
+// --> Usuarios
+app.use("/api/usuarios", require("./routes/usuarios"));
+// --> Login
+app.use("/api/login", require("./routes/auth"));
 
 app.listen(process.env.PORT, () => {
   console.log("Servidor corriendo en puerto ", process.env.PORT);
