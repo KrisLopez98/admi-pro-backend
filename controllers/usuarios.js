@@ -9,11 +9,18 @@ const { generarJWT } = require("../helpers/jwt.js");
 
 // ---> GET USUARIOS
 const getUsuarios = async (request, response) => {
-  const usuarios = await Usuario.find({}, "nombre email role google");
+  const desde = Number(request.query.desde) || 0;
+
+  // Promise all es una promesa que se ejecuta de manera simultanea
+  const [usuarios, total] = await Promise.all([
+    Usuario.find({}, "nombre email role google img").skip(desde).limit(5),
+    Usuario.countDocuments(),
+  ]);
+
   response.json({
     ok: true,
     usuarios,
-    uid: request.uid,
+    total,
   });
 };
 

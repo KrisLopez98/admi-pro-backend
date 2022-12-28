@@ -23,7 +23,14 @@ dbConnection();
 app.use("/api/usuarios", require("./routes/usuarios"));
 // --> Login
 app.use("/api/login", require("./routes/auth"));
-
+// --> Hospital
+app.use("/api/hospitales", require("./routes/hospitales"));
+// --> Medicos
+app.use("/api/medicos", require("./routes/medicos"));
+// --> Busquedas Totales
+app.use("/api/todo", require("./routes/busquedas"));
+// --> Upload imagenes
+app.use("/api/upload", require("./routes/uploads"));
 app.listen(process.env.PORT, () => {
   console.log("Servidor corriendo en puerto ", process.env.PORT);
 });
