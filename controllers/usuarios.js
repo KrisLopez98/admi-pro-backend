@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 // Importar el modelo
 const Usuario = require("../models/usuario.js");
 const { generarJWT } = require("../helpers/jwt.js");
+const usuario = require('../models/usuario.js');
 
 // ---> GET USUARIOS
 const getUsuarios = async (request, response) => {
@@ -95,7 +96,15 @@ const actualizarUsuario = async (req, res = response) => {
       }
     }
     // Tomar el campo del email
-    campos.email = email;
+    if(!usuarioDB.google) {
+      campos.email = email;
+    } else if(usuarioDB.email !== email){
+      return res.status(400).json({
+        ok: false,
+        msg: 'Usuarios de Google no pueden modificar su correo'
+      });
+    }
+    
 
     // Obtener los campos que hemos actualizado
     const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, {
